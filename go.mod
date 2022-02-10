@@ -3,8 +3,14 @@ module github.com/tamalsaha/multi-stage-helm-chart-demo
 go 1.17
 
 require (
+	github.com/Masterminds/sprig/v3 v3.2.2
+	github.com/pkg/errors v0.9.1
 	github.com/spf13/pflag v1.0.5
 	gomodules.xyz/x v0.0.10
+	helm.sh/helm v0.0.0-00010101000000-000000000000
+	helm.sh/helm/v3 v3.6.1
+	k8s.io/api v0.21.1
+	k8s.io/apimachinery v0.21.1
 	k8s.io/cli-runtime v0.21.1
 	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.9.0
@@ -12,6 +18,7 @@ require (
 	kubepack.dev/kubepack v0.3.9-0.20220201033352-575b50c5a43d
 	kubepack.dev/lib-helm v0.3.2-0.20220207083916-19ae74825432
 	kubepack.dev/preset v0.0.0-20220207074019-090909e7fcff
+	sigs.k8s.io/yaml v1.2.0
 )
 
 replace (
@@ -35,7 +42,6 @@ require (
 	github.com/MakeNowJust/heredoc v0.0.0-20170808103936-bb23615498cd // indirect
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver/v3 v3.1.1 // indirect
-	github.com/Masterminds/sprig/v3 v3.2.2 // indirect
 	github.com/Masterminds/squirrel v1.5.0 // indirect
 	github.com/Microsoft/go-winio v0.4.16 // indirect
 	github.com/Microsoft/hcsshim v0.8.14 // indirect
@@ -122,7 +128,6 @@ require (
 	github.com/opencontainers/image-spec v1.0.2 // indirect
 	github.com/opencontainers/runc v1.0.3 // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.11.0 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
@@ -169,11 +174,8 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
-	helm.sh/helm/v3 v3.6.1 // indirect
 	honnef.co/go/tools v0.0.1-2020.1.6 // indirect
-	k8s.io/api v0.21.1 // indirect
 	k8s.io/apiextensions-apiserver v0.21.1 // indirect
-	k8s.io/apimachinery v0.21.1 // indirect
 	k8s.io/apiserver v0.21.1 // indirect
 	k8s.io/component-base v0.21.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20210421082810-95288971da7e // indirect
@@ -187,7 +189,6 @@ require (
 	sigs.k8s.io/kustomize/api v0.8.8 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.10.17 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.1.2 // indirect
-	sigs.k8s.io/yaml v1.2.0 // indirect
 )
 
 replace bitbucket.org/ww/goautoneg => gomodules.xyz/goautoneg v0.0.0-20120707110453-a547fc61f48d
