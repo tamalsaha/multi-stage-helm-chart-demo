@@ -1,3 +1,4 @@
+{{if not (lookup "v1" "Namespace" "" "demo") }}{{ fail "Namespace demo is required" }}{{ end }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
