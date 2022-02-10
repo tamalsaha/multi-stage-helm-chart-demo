@@ -2,9 +2,6 @@ package main
 
 import (
 	"fmt"
-	"path/filepath"
-	"sort"
-
 	flag "github.com/spf13/pflag"
 	"gomodules.xyz/x/crypto/rand"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
@@ -15,9 +12,8 @@ import (
 	clientcmdutil "kmodules.xyz/client-go/tools/clientcmd"
 	"kubepack.dev/kubepack/pkg/lib"
 	"kubepack.dev/lib-helm/pkg/action"
-	actionx "kubepack.dev/lib-helm/pkg/action"
-	"kubepack.dev/lib-helm/pkg/values"
 	chartsapi "kubepack.dev/preset/apis/charts/v1alpha1"
+	"path/filepath"
 )
 
 func main() {
@@ -25,9 +21,13 @@ func main() {
 		masterURL      = ""
 		kubeconfigPath = filepath.Join(homedir.HomeDir(), ".kube", "config")
 
-		url     = "https://raw.githubusercontent.com/kubepack/preset-testdata/master/stable/"
-		name    = "hello"
+		url     = "/Users/tamal/go/src/github.com/tamalsaha/multi-stage-helm-chart-demo/charts/multi-stage/"
+		name    = "multi-stage"
 		version = "0.1.0"
+
+		//url     = "https://raw.githubusercontent.com/kubepack/preset-testdata/master/stable/"
+		//name    = "hello"
+		//version = "0.1.0"
 	)
 	flag.StringVar(&masterURL, "master", masterURL, "The address of the Kubernetes API server (overrides any value in kubeconfig)")
 	flag.StringVar(&kubeconfigPath, "kubeconfig", kubeconfigPath, "Path to kubeconfig file with authorization information (the master location is set by the master flag).")
@@ -46,9 +46,9 @@ func main() {
 	getter := clientcmdutil.NewClientGetter(&kubeconfig)
 
 	ref := chartsapi.ChartPresetRef{
-		//URL:            url,
-		//Name:           name,
-		//Version:        version,
+		URL:            url,
+		Name:           name,
+		Version:        version,
 		PresetGroup:    chartsapi.GroupVersion.Group,
 		PresetKind:     chartsapi.ResourceKindVendorChartPreset,
 		PresetName:     "unified",
@@ -66,26 +66,16 @@ func main() {
 }
 
 func DD(getter genericclioptions.RESTClientGetter, ref chartsapi.ChartPresetRef) error {
-	kc, err := actionx.NewUncachedClient(getter)
-	if err != nil {
-		return err
-	}
+	//kc, err := actionx.NewUncachedClient(getter)
+	//if err != nil {
+	//	return err
+	//}
 
 	chrt, err := lib.DefaultRegistry.GetChart(ref.URL, ref.Name, ref.Version)
 	if err != nil {
 		return err
 	}
-
-	vpsMap, err := values.LoadVendorPresets(chrt.Chart)
-	if err != nil {
-		return err
-	}
-	PrintGPS(vpsMap)
-
-	vals, err := values.MergePresetValues(kc, chrt.Chart, ref)
-	if err != nil {
-		return err
-	}
+	fmt.Println(chrt.Metadata.Name)
 
 	i, err := action.NewInstaller(getter, ref.Namespace, "secret")
 	if err != nil {
@@ -96,9 +86,9 @@ func DD(getter genericclioptions.RESTClientGetter, ref chartsapi.ChartPresetRef)
 			ChartURL:  ref.URL,
 			ChartName: ref.Name,
 			Version:   ref.Version,
-			Values: values.Options{
-				ReplaceValues: vals,
-			},
+			//Values: values.Options{
+			//	ReplaceValues: vals,
+			//},
 			DryRun:       false,
 			DisableHooks: false,
 			Replace:      false,
@@ -116,15 +106,4 @@ func DD(getter genericclioptions.RESTClientGetter, ref chartsapi.ChartPresetRef)
 	}
 	fmt.Println(rel)
 	return nil
-}
-
-func PrintGPS(cpsMap map[string]*chartsapi.VendorChartPreset) {
-	names := make([]string, 0, len(cpsMap))
-	for k := range cpsMap {
-		names = append(names, k)
-	}
-	sort.Strings(names)
-	for _, name := range names {
-		fmt.Println(name)
-	}
 }
