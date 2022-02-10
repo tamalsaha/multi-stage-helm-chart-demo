@@ -13,6 +13,11 @@ require (
 	kubepack.dev/preset v0.0.0-20220207074019-090909e7fcff
 )
 
+replace (
+	helm.sh/helm => ../../../helm.sh/helm
+	kubepack.dev/lib-helm => ../../../kubepack.dev/lib-helm
+)
+
 require (
 	cloud.google.com/go v0.72.0 // indirect
 	cloud.google.com/go/storage v1.12.0 // indirect
