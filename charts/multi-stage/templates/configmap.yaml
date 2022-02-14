@@ -7,4 +7,5 @@ metadata:
     {{$k}}: {{$v}}
   {{- end }}
 data:
-  ca.crt: {{ dig "data" "ca\\.crt" "ca\\.crt" (lookup "v1" "ConfigMap" "kube-root-ca.crt" (printf "%s" .Release.Namespace)) }}
+  ca.crt: |
+    {{- dig "data" "ca.crt" "unknown" (lookup "v1" "ConfigMap" (printf "%s" .Release.Namespace) "kube-root-ca.crt") | nindent 4 }}
