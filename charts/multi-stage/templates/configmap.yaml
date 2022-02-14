@@ -1,4 +1,3 @@
-{{if not (lookup "v1" "Namespace" "" "demo") }}{{ fail "Namespace demo is required" }}{{ end }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,4 +7,4 @@ metadata:
     {{$k}}: {{$v}}
   {{- end }}
 data:
-  a: b
+  ca.crt: {{ dig "data" "ca\\.crt" "ca\\.crt" (lookup "v1" "ConfigMap" "kube-root-ca.crt" (printf "%s" .Release.Namespace)) }}
